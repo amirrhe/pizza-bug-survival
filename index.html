@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Pizza Bug Survival - ChizCode</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="game-container">
+    <header class="game-header">
+      <div class="title">
+        <span class="emoji">🍕</span>
+        <span>Pizza Bug Survival</span>
+      </div>
+      <div class="stats">
+        <div class="stat-block">
+          <div class="stat-label">Score</div>
+          <div class="stat-value" id="scoreDisplay">0</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-label">Time</div>
+          <div class="stat-value" id="timeDisplay">45s</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-label">Pizza Health</div>
+          <div class="stat-value" id="healthDisplay">🍕🍕🍕</div>
+        </div>
+      </div>
+    </header>
+
+    <div class="game-area" id="gameArea">
+      <!-- Center pizza -->
+      <div class="pizza-core">
+        <div class="pizza-glow"></div>
+        <div class="pizza-emoji">🍕</div>
+      </div>
+
+      <!-- Event overlays -->
+      <div class="dog" id="dog">🐶 debugger</div>
+      <div class="senior-dev" id="seniorDev">
+        👴 <span class="bubble">rm -rf / bugs</span>
+      </div>
+      <div class="intern" id="intern">
+        🧑‍💻 <span class="bubble">Intern joined the project</span>
+      </div>
+    </div>
+
+    <div class="messages">
+      <span id="messageText">
+        Protect the pizza! Click the bugs before they reach the slice. 🐛
+      </span>
+    </div>
+
+    <div class="controls">
+      <button class="btn" id="startBtn">Start game</button>
+    </div>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>

@@ -1,0 +1,319 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at top, #ffe8c2 0, #fdf4ea 40%, #f4ebe1 100%);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #3b2d21;
+}
+
+.game-container {
+  width: min(720px, 94vw);
+  padding: 20px 24px 18px;
+  background: #fffaf3;
+  border-radius: 24px;
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.14);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Header and stats */
+
+.game-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 6px;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.title .emoji {
+  font-size: 24px;
+}
+
+.stats {
+  display: flex;
+  gap: 18px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.stat-label {
+  text-transform: uppercase;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: #8b6a4a;
+}
+
+.stat-value {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.stat-block {
+  text-align: right;
+}
+
+/* Game area */
+
+.game-area {
+  margin-top: 8px;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 20px;
+  background: radial-gradient(circle at top, #ffe8c2 0, #ffd3a1 40%, #f7debf 100%);
+  overflow: hidden;
+  border: 2px dashed rgba(117, 78, 37, 0.26);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.85);
+}
+
+/* Center pizza */
+
+.pizza-core {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 140px;
+  height: 140px;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pizza-glow {
+  position: absolute;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 222, 153, 0.85), transparent 65%);
+  filter: blur(1px);
+  animation: pizza-pulse 2.2s ease-in-out infinite;
+}
+
+.pizza-emoji {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #ffeec2, #f8a24c);
+  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 64px;
+}
+
+@keyframes pizza-pulse {
+  0%   { transform: scale(0.96); opacity: 0.8; }
+  50%  { transform: scale(1); opacity: 1; }
+  100% { transform: scale(0.96); opacity: 0.8; }
+}
+
+/* Bugs */
+
+.bug {
+  position: absolute;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #3d2b20;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: #f6e1c3;
+  cursor: pointer;
+  transform: translate(-50%, -50%);
+  transition: left linear, top linear;
+}
+
+.bug::after {
+  content: "";
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #6b3f2b, #2a1712);
+  opacity: 0.7;
+  z-index: -1;
+}
+
+.bug-squash {
+  animation: bug-squash 0.18s forwards;
+}
+
+.bug-knocked {
+  animation: bug-knocked 0.5s forwards;
+}
+
+@keyframes bug-squash {
+  0%   { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(0.3) rotate(25deg); opacity: 0; }
+}
+
+@keyframes bug-knocked {
+  0%   { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  100% { transform: translate(150%, -200%) scale(0.4) rotate(-45deg); opacity: 0; }
+}
+
+/* Event overlays */
+
+.dog,
+.senior-dev,
+.intern {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.9);
+  font-size: 12px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.dog {
+  bottom: 12%;
+  left: -180px;
+  animation-duration: 3.5s;
+}
+
+.dog.show {
+  animation-name: dog-run;
+  animation-timing-function: linear;
+}
+
+@keyframes dog-run {
+  0%   { transform: translateX(0); opacity: 1; }
+  80%  { transform: translateX(940px); opacity: 1; }
+  100% { transform: translateX(1000px); opacity: 0; }
+}
+
+.senior-dev,
+.intern {
+  top: 10%;
+  right: 5%;
+}
+
+.senior-dev .bubble,
+.intern .bubble {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #fff3dc;
+}
+
+.senior-dev.show,
+.intern.show {
+  animation: pop 2.2s ease-out;
+}
+
+
+
+@keyframes pop {
+  0%   { transform: translateY(-10px) scale(0.8); opacity: 0; }
+  20%  { transform: translateY(0) scale(1); opacity: 1; }
+  80%  { transform: translateY(0) scale(1); opacity: 1; }
+  100% { transform: translateY(-10px) scale(0.9); opacity: 0; }
+}
+
+/* Messages & controls */
+
+.messages {
+  margin-top: 10px;
+  min-height: 50px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: #fff3dc;
+  border: 1px solid rgba(204, 147, 58, 0.4);
+  font-size: 14px;
+  line-height: 1.4;
+  display: flex;
+  align-items: center;
+}
+
+.controls {
+  margin-top: 8px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.btn {
+  border: none;
+  border-radius: 999px;
+  padding: 8px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  background: linear-gradient(135deg, #f7863c, #ffb347);
+  color: #fffaf3;
+  box-shadow: 0 4px 10px rgba(247, 134, 60, 0.5);
+  transition: transform 0.1s ease, box-shadow 0.1s ease, filter 0.1s ease;
+}
+
+.btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(247, 134, 60, 0.55);
+  filter: brightness(1.03);
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(1px);
+  box-shadow: 0 2px 6px rgba(247, 134, 60, 0.4);
+  filter: brightness(0.98);
+}
+
+.btn:disabled {
+  opacity: 0.55;
+  cursor: default;
+  box-shadow: none;
+}
+
+/* Small screens */
+
+@media (max-width: 520px) {
+  .game-container {
+    padding: 16px 14px 14px;
+    border-radius: 18px;
+  }
+  .title {
+    font-size: 18px;
+  }
+  .stat-value {
+    font-size: 16px;
+  }
+  .pizza-core {
+    width: 120px;
+    height: 120px;
+  }
+  .pizza-emoji {
+    width: 100px;
+    height: 100px;
+    font-size: 52px;
+  }
+  .bug {
+    width: 38px;
+    height: 38px;
+    font-size: 20px;
+  }
+}
