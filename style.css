@@ -14,6 +14,16 @@ body {
   color: #3b2d21;
 }
 
+/* Disable selection & tap highlight inside the game */
+.game-container,
+.game-container * {
+  -webkit-user-select: none; /* Safari / iOS */
+  -moz-user-select: none;    /* Firefox */
+  -ms-user-select: none;     /* old IE/Edge */
+  user-select: none;
+  -webkit-tap-highlight-color: transparent; /* remove blue tap highlight on mobile */
+}
+
 /* MAIN CONTAINER */
 .game-container {
   width: 94vw;              /* use almost full width on mobile */
@@ -251,11 +261,36 @@ body {
   align-items: center;
 }
 
+/* Controls + difficulty */
+
 .controls {
   margin-top: 8px;
   display: flex;
   justify-content: flex-end;
   gap: 10px;
+}
+
+.difficulty {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-right: auto; /* pushes button to the right */
+}
+
+.difficulty-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #8b6a4a;
+}
+
+.difficulty-select {
+  border-radius: 999px;
+  border: 1px solid rgba(204, 147, 58, 0.7);
+  padding: 4px 10px;
+  font-size: 13px;
+  background: #fffaf3;
+  color: #3b2d21;
+  outline: none;
 }
 
 .btn {

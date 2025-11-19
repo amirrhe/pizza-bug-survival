@@ -1,9 +1,15 @@
 (function () {
   const GAME_DURATION = 45;       // seconds
-  const BUG_SPAWN_INTERVAL = 900; // ms
   const BUG_TRAVEL_TIME = 6500;   // ms to reach the pizza
   const MAX_HEALTH = 3;
   const EVENT_INTERVAL = 8000;    // ms between random events
+
+  // difficulty → spawn interval (ms)
+  const DIFFICULTY_CONFIG = {
+    easy: 1300,
+    medium: 900,
+    hard: 600,
+  };
 
   const scoreDisplay = document.getElementById("scoreDisplay");
   const timeDisplay = document.getElementById("timeDisplay");
@@ -14,6 +20,7 @@
   const dogEl = document.getElementById("dog");
   const seniorDevEl = document.getElementById("seniorDev");
   const internEl = document.getElementById("intern");
+  const difficultySelect = document.getElementById("difficultySelect");
 
   let score = 0;
   let timeLeft = GAME_DURATION;
@@ -26,8 +33,12 @@
   let timerIntervalId = null;
   let eventIntervalId = null;
 
-  // NEW: while an event is playing, pause bug spawning
+  // while an event is playing, pause bug spawning
   let eventActive = false;
+
+  // difficulty state
+  let currentDifficulty = (difficultySelect && difficultySelect.value) || "medium";
+  let bugSpawnInterval = DIFFICULTY_CONFIG[currentDifficulty] || DIFFICULTY_CONFIG.medium;
 
   const bugClickMessages = [
     "Bug squashed. QA approves. ✅",
@@ -143,7 +154,7 @@
 
   function spawnBug() {
     if (!gameRunning) return;
-    if (eventActive) return; // NEW: pause spawns while event text is visible
+    if (eventActive) return; // pause spawns while event text/animation is visible
 
     const areaRect = gameArea.getBoundingClientRect();
     const centerX = areaRect.width / 2;
@@ -317,10 +328,11 @@
   }
 
   function startSpawningBugs() {
+    if (spawnIntervalId) clearInterval(spawnIntervalId);
     spawnIntervalId = setInterval(() => {
       if (!gameRunning) return;
       spawnBug();
-    }, BUG_SPAWN_INTERVAL);
+    }, bugSpawnInterval);
   }
 
   function startEvents() {
@@ -342,10 +354,16 @@
     health = MAX_HEALTH;
     eventActive = false;
 
+    // set difficulty based on selector
+    currentDifficulty = (difficultySelect && difficultySelect.value) || "medium";
+    bugSpawnInterval = DIFFICULTY_CONFIG[currentDifficulty] || DIFFICULTY_CONFIG.medium;
+
     updateScoreDisplay();
     updateTimeDisplay();
     updateHealthDisplay();
-    setMessage(randomFrom(neutralMessages));
+    setMessage(
+      `Difficulty: ${currentDifficulty.toUpperCase()}. Protect the pizza from incoming bugs! 🐛🍕`
+    );
 
     gameRunning = true;
     startBtn.disabled = true;
@@ -399,6 +417,22 @@
       resetGame();
     }
   });
+
+  // Allow changing difficulty mid-game (optional but fun)
+  if (difficultySelect) {
+    difficultySelect.addEventListener("change", () => {
+      const newDiff = difficultySelect.value;
+      currentDifficulty = newDiff;
+      bugSpawnInterval = DIFFICULTY_CONFIG[currentDifficulty] || DIFFICULTY_CONFIG.medium;
+
+      if (gameRunning) {
+        startSpawningBugs(); // restart interval with new speed
+        setMessage(
+          `Difficulty changed to ${currentDifficulty.toUpperCase()}. Good luck, dev. 😈`
+        );
+      }
+    });
+  }
 
   // Initial UI
   updateScoreDisplay();
